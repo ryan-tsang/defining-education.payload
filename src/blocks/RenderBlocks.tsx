@@ -6,14 +6,20 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { HeroBannerBlock } from '@/blocks/HeroBanner/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { SubjectsCtaBlock } from '@/blocks/SubjectsCta/Component'
+import { TutorShowcaseBlock } from '@/blocks/TutorShowcase/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
+  heroBanner: HeroBannerBlock,
   mediaBlock: MediaBlock,
+  subjectsCta: SubjectsCtaBlock,
+  tutorShowcase: TutorShowcaseBlock,
 }
 
 export const RenderBlocks: React.FC<{
