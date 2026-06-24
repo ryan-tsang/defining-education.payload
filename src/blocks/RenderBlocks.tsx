@@ -6,15 +6,25 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { HeroBannerBlock } from '@/blocks/HeroBanner/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { SubjectsCtaBlock } from '@/blocks/SubjectsCta/Component'
+import { TutorShowcaseBlock } from '@/blocks/TutorShowcase/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
+  heroBanner: HeroBannerBlock,
   mediaBlock: MediaBlock,
+  subjectsCta: SubjectsCtaBlock,
+  tutorShowcase: TutorShowcaseBlock,
 }
+
+// Full-width brand sections span edge-to-edge and own their vertical spacing,
+// so they skip the default `my-16` rhythm to sit flush against their neighbours.
+const fullBleedBlocks = new Set<keyof typeof blockComponents>(['heroBanner', 'subjectsCta'])
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
@@ -34,7 +44,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div className={fullBleedBlocks.has(blockType) ? undefined : 'my-16'} key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>
