@@ -18,6 +18,19 @@ import { getServerSideURL } from './utilities/getURL'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Origins allowed for CORS + CSRF: the running server URL plus the production
+// domain (apex + www). De-duplicated so dev (where the server URL is one of
+// these) doesn't repeat entries.
+const allowedOrigins = Array.from(
+  new Set(
+    [
+      getServerSideURL(),
+      'https://www.definingeducation.com.hk',
+      'https://definingeducation.com.hk',
+    ].filter(Boolean),
+  ),
+)
+
 export default buildConfig({
   admin: {
     components: {
@@ -57,13 +70,24 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
+  // Defining Education serves a bilingual (Traditional Chinese / English) audience.
+  // zh-HK is the default; fallback fills missing translations from the default locale.
+  localization: {
+    locales: [
+      { label: '繁體中文', code: 'zh-HK' },
+      { label: 'English', code: 'en' },
+    ],
+    defaultLocale: 'zh-HK',
+    fallback: true,
+  },
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users],
-  cors: [getServerSideURL()].filter(Boolean),
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   globals: [Header, Footer],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
