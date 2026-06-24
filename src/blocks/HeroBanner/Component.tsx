@@ -32,7 +32,7 @@ export const HeroBannerBlock: React.FC<HeroBannerBlockProps> = ({ links, media, 
         className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-yellow/25 blur-3xl"
       />
 
-      <div className="container relative z-10 flex flex-col items-center gap-8 py-20 text-center md:py-28">
+      <div className="container relative z-10 flex min-h-[26rem] flex-col items-center justify-center gap-8 py-20 text-center md:min-h-[32rem] md:py-28">
         {richText && (
           <RichText
             className="max-w-3xl [&_h1]:font-bold [&_h1]:tracking-tight [&_p]:text-lg [&_p]:opacity-90 md:[&_p]:text-xl"

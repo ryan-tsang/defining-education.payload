@@ -22,6 +22,10 @@ const blockComponents = {
   tutorShowcase: TutorShowcaseBlock,
 }
 
+// Full-width brand sections span edge-to-edge and own their vertical spacing,
+// so they skip the default `my-16` rhythm to sit flush against their neighbours.
+const fullBleedBlocks = new Set<keyof typeof blockComponents>(['heroBanner', 'subjectsCta'])
+
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
 }> = (props) => {
@@ -40,7 +44,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div className={fullBleedBlocks.has(blockType) ? undefined : 'my-16'} key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>
