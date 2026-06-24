@@ -4,6 +4,7 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  UploadFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
@@ -41,6 +42,20 @@ const columnFields: Field[] = [
         return [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+          // Lets editors insert/upload images inline from the Media collection.
+          UploadFeature({
+            collections: {
+              media: {
+                fields: [
+                  {
+                    name: 'caption',
+                    type: 'text',
+                    label: 'Caption',
+                  },
+                ],
+              },
+            },
+          }),
           FixedToolbarFeature(),
           InlineToolbarFeature(),
         ]
