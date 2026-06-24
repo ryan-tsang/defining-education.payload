@@ -38,7 +38,7 @@ export const TutorShowcaseBlock: React.FC<TutorShowcaseBlockProps> = ({
                 )}
               </div>
               <h3 className="text-lg font-semibold text-foreground">{name}</h3>
-              <p className="text-sm font-medium text-primary">{subject}</p>
+              <p className="text-sm font-medium text-accent-foreground">{subject}</p>
             </li>
           )
         })}
