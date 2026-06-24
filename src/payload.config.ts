@@ -70,16 +70,6 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  // Defining Education serves a bilingual (Traditional Chinese / English) audience.
-  // zh-HK is the default; fallback fills missing translations from the default locale.
-  localization: {
-    locales: [
-      { label: '繁體中文', code: 'zh-HK' },
-      { label: 'English', code: 'en' },
-    ],
-    defaultLocale: 'zh-HK',
-    fallback: true,
-  },
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
