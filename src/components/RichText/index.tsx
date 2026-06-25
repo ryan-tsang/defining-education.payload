@@ -18,16 +18,23 @@ import type {
   ButtonBlock as ButtonBlockProps,
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
+  YouTubeBlock as YouTubeBlockProps,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { ButtonBlock } from '@/blocks/RichTextButton/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { YouTubeBlock } from '@/blocks/YouTube/Component'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<
-      CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps | ButtonBlockProps
+      | CTABlockProps
+      | MediaBlockProps
+      | BannerBlockProps
+      | CodeBlockProps
+      | ButtonBlockProps
+      | YouTubeBlockProps
     >
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -57,6 +64,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
     button: ({ node }) => <ButtonBlock className="col-start-2" {...node.fields} />,
+    youtube: ({ node }) => <YouTubeBlock className="col-start-2" {...node.fields} />,
   },
 })
 
