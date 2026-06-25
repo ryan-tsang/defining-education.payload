@@ -158,6 +158,8 @@ export interface Page {
     | TutorShowcaseBlock
     | LatestPostsBlock
     | SubjectsCtaBlock
+    | FeatureGridBlock
+    | LocationsBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -586,6 +588,74 @@ export interface SubjectsCtaBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'subjectsCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock".
+ */
+export interface FeatureGridBlock {
+  /**
+   * Section heading, e.g. 為何選擇凝皓教育
+   */
+  heading?: string | null;
+  /**
+   * Optional short paragraph shown under the heading.
+   */
+  intro?: string | null;
+  /**
+   * How many cards per row on desktop (2–4).
+   */
+  columns?: number | null;
+  items?:
+    | {
+        /**
+         * Optional emoji or short label shown above the title, e.g. 🎓 or 01.
+         */
+        icon?: string | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationsBlock".
+ */
+export interface LocationsBlock {
+  /**
+   * Section heading, e.g. 學校位置及開放時間
+   */
+  heading?: string | null;
+  /**
+   * Optional short paragraph shown under the heading.
+   */
+  intro?: string | null;
+  branches?:
+    | {
+        /**
+         * Branch name, e.g. 太子分校
+         */
+        name: string;
+        address?: string | null;
+        phone?: string | null;
+        /**
+         * Opening hours, e.g. 星期一至日 10:00 – 21:00
+         */
+        hours?: string | null;
+        /**
+         * Optional Google Maps link. Shows a "查看地圖" button when set.
+         */
+        mapUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'locations';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1211,6 +1281,8 @@ export interface PagesSelect<T extends boolean = true> {
         tutorShowcase?: T | TutorShowcaseBlockSelect<T>;
         latestPosts?: T | LatestPostsBlockSelect<T>;
         subjectsCta?: T | SubjectsCtaBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        locations?: T | LocationsBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1342,6 +1414,45 @@ export interface SubjectsCtaBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock_select".
+ */
+export interface FeatureGridBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  columns?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationsBlock_select".
+ */
+export interface LocationsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  branches?:
+    | T
+    | {
+        name?: T;
+        address?: T;
+        phone?: T;
+        hours?: T;
+        mapUrl?: T;
         id?: T;
       };
   id?: T;

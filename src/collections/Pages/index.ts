@@ -5,10 +5,12 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
+import { FeatureGrid } from '../../blocks/FeatureGrid/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { HeroBanner } from '../../blocks/HeroBanner/config'
 import { HeroSlider } from '../../blocks/HeroSlider/config'
 import { LatestPosts } from '../../blocks/LatestPosts/config'
+import { Locations } from '../../blocks/Locations/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { SubjectsCta } from '../../blocks/SubjectsCta/config'
 import { TutorShowcase } from '../../blocks/TutorShowcase/config'
@@ -78,6 +80,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 TutorShowcase,
                 LatestPosts,
                 SubjectsCta,
+                FeatureGrid,
+                Locations,
                 CallToAction,
                 Content,
                 MediaBlock,
