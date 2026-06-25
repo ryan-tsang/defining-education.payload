@@ -7,6 +7,8 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/Component'
+import { HeroSliderBlock } from '@/blocks/HeroSlider/Component'
+import { LatestPostsBlock } from '@/blocks/LatestPosts/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { SubjectsCtaBlock } from '@/blocks/SubjectsCta/Component'
 import { TutorShowcaseBlock } from '@/blocks/TutorShowcase/Component'
@@ -17,6 +19,8 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   heroBanner: HeroBannerBlock,
+  heroSlider: HeroSliderBlock,
+  latestPosts: LatestPostsBlock,
   mediaBlock: MediaBlock,
   subjectsCta: SubjectsCtaBlock,
   tutorShowcase: TutorShowcaseBlock,
@@ -24,7 +28,12 @@ const blockComponents = {
 
 // Full-width brand sections span edge-to-edge and own their vertical spacing,
 // so they skip the default `my-16` rhythm to sit flush against their neighbours.
-const fullBleedBlocks = new Set<keyof typeof blockComponents>(['heroBanner', 'subjectsCta'])
+const fullBleedBlocks = new Set<keyof typeof blockComponents>([
+  'heroBanner',
+  'heroSlider',
+  'latestPosts',
+  'subjectsCta',
+])
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]

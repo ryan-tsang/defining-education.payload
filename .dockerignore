@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.github
+infra
+tests
+playwright-report
+test-results
+.env
+.env.*
+!.env.example
+*.log
+.vscode
+.DS_Store
+README.md

@@ -1,4 +1,5 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { gcsStorage } from '@payloadcms/storage-gcs'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -89,4 +90,16 @@ export const plugins: Plugin[] = [
       },
     },
   }),
+  // Store media in GCS only when a bucket is configured (i.e. on the dev/prod
+  // cluster). Locally GCS_BUCKET is unset, so uploads stay on the local disk.
+  // On GKE the app authenticates to GCS via Workload Identity (ADC) — no key file.
+  ...(process.env.GCS_BUCKET
+    ? [
+        gcsStorage({
+          collections: { media: true },
+          bucket: process.env.GCS_BUCKET,
+          options: { projectId: process.env.GCP_PROJECT_ID },
+        }),
+      ]
+    : []),
 ]

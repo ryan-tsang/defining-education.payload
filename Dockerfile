@@ -2,6 +2,9 @@
 # From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
 FROM node:22.17.0-alpine AS base
+# Pin pnpm to a version satisfying the project's engines (^9 || ^10). Corepack's
+# default pulls pnpm 11, which fails the frozen install with an engines error.
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -24,6 +27,28 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Build-time config. DATABASE_URL/PAYLOAD_SECRET are needed because Payload
+# prerenders pages against the DB during `next build`; NEXT_PUBLIC_SERVER_URL is
+# inlined into client bundles. These live only in this builder stage — the final
+# `runner` image is a fresh stage and does not inherit them.
+ARG DATABASE_URL
+ARG PAYLOAD_SECRET
+ARG NEXT_PUBLIC_SERVER_URL
+ARG GCS_BUCKET
+ARG GCP_PROJECT_ID
+ENV DATABASE_URL=$DATABASE_URL
+ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+ENV GCS_BUCKET=$GCS_BUCKET
+ENV GCP_PROJECT_ID=$GCP_PROJECT_ID
+
+# Regenerate the admin import map with the production plugin set active. The
+# gcsStorage plugin is GCS_BUCKET-gated, so its admin component is only registered
+# when GCS_BUCKET is set — otherwise the admin panel renders blank in production.
+# Done here (not from the committed file) because `next dev` rewrites importMap.js
+# without GCS, so the committed copy can't be trusted.
+RUN corepack enable pnpm && pnpm generate:importmap
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
