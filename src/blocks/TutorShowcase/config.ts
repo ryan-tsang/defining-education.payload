@@ -19,33 +19,34 @@ export const TutorShowcase: Block = {
       },
     },
     {
-      name: 'tutors',
-      type: 'array',
-      minRows: 1,
-      labels: {
-        plural: 'Tutors',
-        singular: 'Tutor',
-      },
+      name: 'showAll',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Show all published tutors',
       admin: {
-        initCollapsed: true,
+        description:
+          'On: list every published tutor (newest first). Off: show only the tutors you pick below.',
       },
-      fields: [
-        {
-          name: 'photo',
-          type: 'upload',
-          relationTo: 'media',
-        },
-        {
-          name: 'name',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'subject',
-          type: 'text',
-          required: true,
-        },
-      ],
+    },
+    {
+      name: 'limit',
+      type: 'number',
+      min: 1,
+      max: 60,
+      admin: {
+        description: 'Optional cap when showing all tutors.',
+        condition: (_, siblingData) => Boolean(siblingData?.showAll),
+      },
+    },
+    {
+      name: 'tutors',
+      type: 'relationship',
+      relationTo: 'tutors',
+      hasMany: true,
+      admin: {
+        description: 'Tutors to feature, in order.',
+        condition: (_, siblingData) => !siblingData?.showAll,
+      },
     },
   ],
   labels: {

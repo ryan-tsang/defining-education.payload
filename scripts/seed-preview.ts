@@ -130,7 +130,7 @@ const payload = await getPayload({ config })
 
 // Clear previously-seeded demo content so re-runs stay idempotent (this seed is
 // demo data only). Pages/posts are deleted before media to avoid dangling refs.
-for (const collection of ['pages', 'posts', 'media'] as const) {
+for (const collection of ['pages', 'posts', 'tutors', 'media'] as const) {
   await payload.delete({
     collection,
     where: { id: { exists: true } },
@@ -344,30 +344,53 @@ await payload.updateGlobal({
 })
 console.log('✓ footer nav')
 
-// ── Media: tutor avatars (one per roster member) ────────────────────────────
-type Tutor = { name: string; subjectLabel: string; secondary: string; photo: number }
+// ── Tutors collection (one doc + avatar per roster member) ──────────────────
+type Tutor = { id: number; name: string; subjectLabel: string }
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+const usedSlugs = new Set<string>()
 const allTutors: Tutor[] = []
 let avatarIndex = 0
 for (const group of ROSTER) {
   for (const person of group.people) {
     const name = person.zh || person.en
-    const secondary = person.zh && person.en ? `${person.en}・${group.subject}` : group.subject
+    const nameEn = person.zh ? person.en : ''
+    let slug = slugify(person.en) || `tutor-${avatarIndex + 1}`
+    while (usedSlugs.has(slug)) slug = `${slug}-${avatarIndex + 1}`
+    usedSlugs.add(slug)
     const photo = await makeMedia(
       `tutor-${avatarIndex + 1}`,
       avatarSvg(tealPalette[avatarIndex % tealPalette.length]),
       `${name}（示範相片）`,
     )
-    allTutors.push({ name, subjectLabel: group.subject, secondary, photo })
+    const doc = await payload.create({
+      collection: 'tutors',
+      overrideAccess: true,
+      context: { disableRevalidate: true },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: {
+        name,
+        nameEn: nameEn || undefined,
+        subject: group.subject,
+        photo,
+        slug,
+        _status: 'published',
+        bio: lex([
+          para(`${name}${nameEn ? `（${nameEn}）` : ''}為凝皓教育${group.subject}科名師。`),
+          para('教學經驗豐富，緊貼 DSE 考評重點，因材施教，深受學生歡迎。（示範簡介）'),
+        ]),
+      } as any,
+    })
+    allTutors.push({ id: doc.id as number, name, subjectLabel: group.subject })
     avatarIndex++
   }
 }
-console.log(`✓ ${allTutors.length} tutor avatars`)
+console.log(`✓ ${allTutors.length} tutors`)
 
 // Featured cross-section for the home page (one star tutor per key subject).
 const FEATURED = ['林溢欣', 'Bon Lam', 'Dick Hui', 'Ango Chung', 'Dr. Sally Wong', 'Roy Sir', 'JT', 'Richie Pang']
-const featuredTutors = FEATURED.map((n) => allTutors.find((t) => t.name === n)).filter(
-  (t): t is Tutor => Boolean(t),
-).map((t) => ({ photo: t.photo, name: t.name, subject: t.subjectLabel }))
+const featuredTutorIds = FEATURED.map((n) => allTutors.find((t) => t.name === n)?.id).filter(
+  (id): id is number => typeof id === 'number',
+)
 
 // ── Hero slider banners (home) ──────────────────────────────────────────────
 const slideSeed: {
@@ -512,7 +535,8 @@ await upsertPage(
       blockType: 'tutorShowcase',
       heading: '本校名師',
       intro: '由經驗豐富的 DSE 名師團隊任教，緊貼考評重點，因材施教，全面提升學生成績。',
-      tutors: featuredTutors,
+      showAll: false,
+      tutors: featuredTutorIds,
     },
     {
       blockType: 'subjectsCta',
@@ -571,17 +595,16 @@ await upsertPage(
 
 // ── 本校名師 / tutors ─────────────────────────────────────────────────────────
 const tutorsBanner = await makeBanner('tutors', '本校名師')
-const allTutorCards = allTutors.map((t) => ({ photo: t.photo, name: t.name, subject: t.secondary }))
 await upsertPage(
   'tutors',
   '本校名師',
   [
-    heroBanner(tutorsBanner, '本校名師', '各科 DSE 名師親自任教，緊貼考評重點，因材施教。'),
+    heroBanner(tutorsBanner, '本校名師', '各科 DSE 名師親自任教，緊貼考評重點，因材施教。點擊名師了解詳情。'),
     {
       blockType: 'tutorShowcase',
       heading: '名師團隊',
       intro: '涵蓋中文、英文、數學、理科、商科、人文及小學課程，總有一位適合你。',
-      tutors: allTutorCards,
+      showAll: true,
     },
     cta([heading('想了解名師的課程及時間表？', 'h2'), para('立即搜尋課程，或聯絡我們查詢報名詳情。')], [
       { url: '/courses', label: '搜尋課程', appearance: 'default' },

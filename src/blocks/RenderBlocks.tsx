@@ -6,7 +6,6 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FeatureGridBlock } from '@/blocks/FeatureGrid/Component'
-import { FormBlock } from '@/blocks/Form/Component'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/Component'
 import { HeroSliderBlock } from '@/blocks/HeroSlider/Component'
 import { LatestPostsBlock } from '@/blocks/LatestPosts/Component'
@@ -20,7 +19,6 @@ const blockComponents = {
   content: ContentBlock,
   cta: CallToActionBlock,
   featureGrid: FeatureGridBlock,
-  formBlock: FormBlock,
   heroBanner: HeroBannerBlock,
   heroSlider: HeroSliderBlock,
   latestPosts: LatestPostsBlock,

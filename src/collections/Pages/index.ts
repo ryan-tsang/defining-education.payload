@@ -6,7 +6,6 @@ import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FeatureGrid } from '../../blocks/FeatureGrid/config'
-import { FormBlock } from '../../blocks/Form/config'
 import { HeroBanner } from '../../blocks/HeroBanner/config'
 import { HeroSlider } from '../../blocks/HeroSlider/config'
 import { LatestPosts } from '../../blocks/LatestPosts/config'
@@ -86,7 +85,6 @@ export const Pages: CollectionConfig<'pages'> = {
                 Content,
                 MediaBlock,
                 Archive,
-                FormBlock,
               ],
               required: true,
               admin: {
