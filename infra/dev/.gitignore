@@ -1,0 +1,8 @@
+node_modules/
+bin/
+*.tsbuildinfo
+
+# Stack config holds the Cloudflare token as a secret encrypted with an EMPTY
+# passphrase (Redso dev convention) — i.e. effectively plaintext. Never commit it.
+# Re-create config on a fresh checkout per README.md.
+Pulumi.dev.yaml
