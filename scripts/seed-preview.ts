@@ -105,9 +105,25 @@ await payload.updateGlobal({
       { link: { type: 'custom', url: '/student', label: '學生須知', newTab: false } },
       { link: { type: 'custom', url: '/register', label: '新生註冊', newTab: false } },
     ],
+    subjectItems: [
+      '中文',
+      '英文',
+      '數學',
+      '化學',
+      '通識',
+      '中史',
+      '經濟',
+      '生物',
+      '物理',
+      '企會財',
+      '體育',
+      '倫理與宗教',
+    ].map((label) => ({
+      link: { type: 'custom' as const, url: `/search?q=${encodeURIComponent(label)}`, label, newTab: false },
+    })),
   },
 })
-console.log('✓ header nav')
+console.log('✓ header nav + subjects')
 
 await payload.updateGlobal({
   slug: 'footer',

@@ -25,6 +25,24 @@ export const Header: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'subjectItems',
+      type: 'array',
+      label: 'Subject categories',
+      labels: { singular: 'Subject', plural: 'Subjects' },
+      fields: [
+        link({
+          appearances: false,
+        }),
+      ],
+      admin: {
+        initCollapsed: true,
+        description: 'Second-row subject/category links shown under the main navigation.',
+        components: {
+          RowLabel: '@/Header/RowLabel#RowLabel',
+        },
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidateHeader],
