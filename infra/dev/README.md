@@ -36,20 +36,21 @@ Requires `gcloud` + `kubectl` + `gke-gcloud-auth-plugin`, logged in (CLI **and**
 
 ## Deploying the app image (CI is not yet wired)
 
+Use the deploy script from the repo root — it port-forwards the DB, builds
+`linux/amd64`, pushes to Artifact Registry, and rolls out the Deployment:
+
 ```sh
-# build linux/amd64 with the DB reachable (it prerenders at build time):
-kubectl -n payload port-forward --address 0.0.0.0 sts/postgres 15432:5432 &
-docker buildx build --platform linux/amd64 --load \
-  --build-arg DATABASE_URL='postgresql://payload:<pw>@host.docker.internal:15432/payload' \
-  --build-arg PAYLOAD_SECRET='<from k8s secret>' \
-  --build-arg NEXT_PUBLIC_SERVER_URL=https://payload.redsoapp.com \
-  --build-arg GCS_BUCKET=redso-payload-dev \
-  --build-arg GCP_PROJECT_ID=redso-elastic-dev \
-  -t asia-east2-docker.pkg.dev/redso-elastic-dev/payload-dev/app:$(date +%s) .
-docker push <that tag>
-kubectl -n payload set image deploy/main main=<that tag>
+pnpm deploy:dev          # = bash scripts/deploy-dev.sh
 ```
+
+It reads `DATABASE_URL`/`PAYLOAD_SECRET` from the `payload/app` k8s Secret (never
+printed) and tags the image with a timestamp + `latest`. Override any default via env,
+e.g. `SERVER_URL=… GCS_BUCKET=… pnpm deploy:dev`.
 
 The Dockerfile regenerates the Payload import map with `GCS_BUCKET` set during the build —
 required, or the admin panel renders blank (the `gcsStorage` admin component would be
 missing from the map).
+
+> Code only. A schema change (e.g. a new richText upload adds a `media` column to
+> `*_rels`) won't be applied by a deploy — sync it separately (a `pulumi`-side migration,
+> or a one-off `payload migrate` / dev-push against the port-forwarded DB).

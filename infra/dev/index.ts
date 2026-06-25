@@ -73,7 +73,12 @@ const bucket = new gcp.storage.Bucket('bucket', {
   uniformBucketLevelAccess: true,
   cors: [
     {
-      origins: ['*'],
+      // Restrict browser CORS to our own origins (not '*').
+      origins: [
+        `https://${DOMAIN}`,
+        'https://www.definingeducation.com.hk',
+        'https://definingeducation.com.hk',
+      ],
       methods: ['GET', 'HEAD', 'OPTIONS', 'PUT'],
       responseHeaders: ['Content-Type', 'Access-Control-Allow-Origin'],
       maxAgeSeconds: 3600,
