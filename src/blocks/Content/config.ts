@@ -1,6 +1,7 @@
 import type { Block, Field } from 'payload'
 
 import {
+  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -9,6 +10,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
+import { ButtonBlock } from '../RichTextButton/config'
 
 const columnFields: Field[] = [
   {
@@ -42,6 +44,7 @@ const columnFields: Field[] = [
         return [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+          BlocksFeature({ blocks: [ButtonBlock] }),
           // Lets editors insert/upload images inline from the Media collection.
           UploadFeature({
             collections: {
