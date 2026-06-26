@@ -25,7 +25,7 @@ export const TutorShowcase: Block = {
       label: 'Show all published tutors',
       admin: {
         description:
-          'On: list every published tutor (newest first). Off: show only the tutors you pick below.',
+          'On: list every published tutor (in the order they were added). Off: show only the tutors you pick below.',
       },
     },
     {

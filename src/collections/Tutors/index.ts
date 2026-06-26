@@ -81,7 +81,29 @@ export const Tutors: CollectionConfig<'tutors'> = {
       }),
       label: 'Profile',
     },
-    slugField({ useAsSlug: 'nameEn' }),
+    // `useAsSlug` must point at an always-present field. `name` is required;
+    // `nameEn` is optional, and pointing the slug at it caused autosave/publish to
+    // reset the slug to null whenever nameEn was blank (most English-named tutors).
+    // The custom slugify still prefers the English name so Chinese-named tutors get
+    // a stable Latin slug (e.g. 林溢欣 → "yy-lam"); a tutor with no Latin name at
+    // all yields an empty slug the editor must fill in (default slugify drops
+    // non-ASCII), instead of silently nulling a working slug.
+    slugField({
+      useAsSlug: 'name',
+      slugify: ({ data, valueToSlugify }) => {
+        const toSlug = (s: unknown) =>
+          String(s || '')
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+        // Slugify the primary value (a manually-typed slug on create, otherwise the
+        // `name`); fall back to the English name only when that yields nothing — i.e.
+        // a Chinese display name (林溢欣 → "" → "yy-lam"). Never returns null, so an
+        // existing slug is never wiped by autosave.
+        return toSlug(valueToSlugify) || toSlug(data?.nameEn)
+      },
+    }),
   ],
   hooks: {
     afterChange: [revalidateTutor],

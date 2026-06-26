@@ -499,7 +499,7 @@ export interface TutorShowcaseBlock {
    */
   intro?: string | null;
   /**
-   * On: list every published tutor (newest first). Off: show only the tutors you pick below.
+   * On: list every published tutor (in the order they were added). Off: show only the tutors you pick below.
    */
   showAll?: boolean | null;
   /**
