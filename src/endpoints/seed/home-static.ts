@@ -5,8 +5,8 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
   slug: 'home',
   _status: 'published',
   meta: {
-    description: 'An open-source website built with Payload and Next.js.',
-    title: 'Payload Website Template',
+    description: '凝皓教育（Defining Education）— DSE 各科名師補習課程，港九新界多區分校及網上平台。',
+    title: '凝皓教育 Defining Education',
   },
   title: 'Home',
   layout: [],

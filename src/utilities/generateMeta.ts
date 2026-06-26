@@ -8,7 +8,7 @@ import { getServerSideURL } from './getURL'
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
 
-  let url = serverUrl + '/website-template-OG.webp'
+  let url = serverUrl + '/de-logo.png'
 
   if (image && typeof image === 'object' && 'url' in image) {
     const ogUrl = image.sizes?.og?.url
@@ -26,9 +26,12 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+  // Append the brand as a suffix, except when the page title already carries it
+  // (e.g. the home page) — avoids "凝皓教育 … | 凝皓教育 …" duplication.
+  const brand = '凝皓教育 Defining Education'
+  const metaTitle = doc?.meta?.title
+  const title =
+    metaTitle && !metaTitle.includes('凝皓教育') ? `${metaTitle} | ${brand}` : metaTitle || brand
 
   return {
     description: doc?.meta?.description,
