@@ -11,6 +11,7 @@ import {
 
 import { link } from '@/fields/link'
 import { ButtonBlock } from '../RichTextButton/config'
+import { YouTube } from '../YouTube/config'
 
 const columnFields: Field[] = [
   {
@@ -44,7 +45,7 @@ const columnFields: Field[] = [
         return [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-          BlocksFeature({ blocks: [ButtonBlock] }),
+          BlocksFeature({ blocks: [ButtonBlock, YouTube] }),
           // Lets editors insert/upload images inline from the Media collection.
           UploadFeature({
             collections: {

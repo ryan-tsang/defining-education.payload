@@ -1,5 +1,6 @@
 import type { TextFieldSingleValidation } from 'payload'
 import {
+  BlocksFeature,
   BoldFeature,
   ItalicFeature,
   LinkFeature,
@@ -9,12 +10,18 @@ import {
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
+import { YouTube } from '@/blocks/YouTube/config'
+
 export const defaultLexical = lexicalEditor({
   features: [
     ParagraphFeature(),
     UnderlineFeature(),
     BoldFeature(),
     ItalicFeature(),
+    // Available in every editor that inherits rootFeatures. Editors that
+    // override BlocksFeature (Posts, Content) re-add YouTube explicitly, since
+    // duplicate BlocksFeature instances don't merge — the last one wins.
+    BlocksFeature({ blocks: [YouTube] }),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
       fields: ({ defaultFields }) => {

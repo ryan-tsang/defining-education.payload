@@ -5,10 +5,11 @@ import type { Page } from '@/payload-types'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
-import { FormBlock } from '@/blocks/Form/Component'
+import { FeatureGridBlock } from '@/blocks/FeatureGrid/Component'
 import { HeroBannerBlock } from '@/blocks/HeroBanner/Component'
 import { HeroSliderBlock } from '@/blocks/HeroSlider/Component'
 import { LatestPostsBlock } from '@/blocks/LatestPosts/Component'
+import { LocationsBlock } from '@/blocks/Locations/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { SubjectsCtaBlock } from '@/blocks/SubjectsCta/Component'
 import { TutorShowcaseBlock } from '@/blocks/TutorShowcase/Component'
@@ -17,10 +18,11 @@ const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
-  formBlock: FormBlock,
+  featureGrid: FeatureGridBlock,
   heroBanner: HeroBannerBlock,
   heroSlider: HeroSliderBlock,
   latestPosts: LatestPostsBlock,
+  locations: LocationsBlock,
   mediaBlock: MediaBlock,
   subjectsCta: SubjectsCtaBlock,
   tutorShowcase: TutorShowcaseBlock,
@@ -33,6 +35,7 @@ const fullBleedBlocks = new Set<keyof typeof blockComponents>([
   'heroSlider',
   'latestPosts',
   'subjectsCta',
+  'locations',
 ])
 
 export const RenderBlocks: React.FC<{

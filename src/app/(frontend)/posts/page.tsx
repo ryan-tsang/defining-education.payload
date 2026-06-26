@@ -58,6 +58,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `消息及優惠 | 凝皓教育 Defining Education`,
   }
 }
